@@ -1,0 +1,1 @@
+ALTER TABLE category ADD COLUMN version INT DEFAULT 0;
