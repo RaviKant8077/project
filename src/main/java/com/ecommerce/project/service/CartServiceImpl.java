@@ -6,6 +6,7 @@ import com.ecommerce.project.model.Cart;
 import com.ecommerce.project.model.CartItem;
 import com.ecommerce.project.model.Product;
 import com.ecommerce.project.payload.CartDTO;
+import com.ecommerce.project.payload.CartItemDTO;
 import com.ecommerce.project.payload.ProductDTO;
 import com.ecommerce.project.repositories.CartItemRepository;
 import com.ecommerce.project.repositories.CartRepository;
@@ -36,6 +37,8 @@ public class CartServiceImpl implements CartService{
 
     @Autowired
     ModelMapper modelMapper;
+
+
 
     @Override
     public CartDTO addProductToCart(Long productId, Integer quantity) {
@@ -172,6 +175,7 @@ public class CartServiceImpl implements CartService{
 
         if (newQuantity == 0){
             deleteProductFromCart(cartId, productId);
+
         } else {
             cartItem.setProductPrice(product.getSpecialPrice());
             cartItem.setQuantity(cartItem.getQuantity() + quantity);
@@ -227,6 +231,8 @@ public class CartServiceImpl implements CartService{
         CartItem cartItem = cartItemRepository.findCartItemByProductIdAndCartId(cartId, productId);
 
         if (cartItem == null) {
+
+            cart.setTotalPrice(0.00);
             throw new ResourceNotFoundException("Product", "productId", productId);
         }
 
@@ -262,6 +268,63 @@ public class CartServiceImpl implements CartService{
                 + (cartItem.getProductPrice() * cartItem.getQuantity()));
 
         cartItem = cartItemRepository.save(cartItem);
+    }
+    @Transactional
+    @Override
+    public String createOrUpdateCartWithItems(List<CartItemDTO> cartItems) {
+
+        String emailId = authUtil.loggedInEmail();
+
+
+        Cart existingCart = cartRepository.findCartByEmail(emailId);
+        if(existingCart == null){
+            existingCart = new Cart();
+            existingCart.setTotalPrice(0.0);
+            existingCart.setUser(authUtil.loggedInUser());
+            existingCart = cartRepository.save(existingCart);
+        }else {
+            cartItemRepository.deleteAllByCartId(existingCart.getCartId());
+            existingCart.setTotalPrice(0.0);
+        }
+
+        double totalPrice = 0.00;
+        for(CartItemDTO cartItemDTO : cartItems){
+            Long productId = cartItemDTO.getProductId();
+            Integer quantity = cartItemDTO.getQuantity();
+
+            Product product = productRepository.findById(productId).orElseThrow(() -> new ResourceNotFoundException("Product","productId",productId));
+
+            // product.setQuantity(cartItemDTO.getQuantity() - quantity);
+            totalPrice += product.getSpecialPrice() * quantity;
+
+            CartItem cartItem = new CartItem();
+            cartItem.setProduct(product);
+            cartItem.setCart(existingCart);
+            cartItem.setQuantity(quantity);
+            cartItem.setProductPrice(product.getSpecialPrice());
+            cartItem.setDiscount(product.getDiscount());
+            cartItemRepository.save(cartItem);
+        }
+
+        existingCart.setTotalPrice(totalPrice);
+        cartRepository.save(existingCart);
+        return "Cart created/updated with new items successfully";
+
+    }
+
+    @Override
+    public String deleteUserCart(Long cartId) {
+        Long userId = authUtil.loggedInUser().getUserId();
+        Cart existingCart = cartRepository.findById(cartId)
+                .orElseThrow(() -> new ResourceNotFoundException("Cart", "cartId", cartId));
+
+        if (!existingCart.getUser().getUserId().equals(userId)) {
+            throw new APIException("You are not authorized to delete this cart");
+        }
+
+        cartRepository.deleteCartByCartId(cartId);
+
+        return "Cart with cartid " + cartId +" and UserId " + userId+ " deleted successfully";
     }
 
 }

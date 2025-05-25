@@ -22,7 +22,7 @@ public class CorsConfig implements WebMvcConfigurer {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowedOrigins(List.of("frontEndUrl")); // Allow frontend
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        config.setAllowedHeaders(List.of("*")); // Allow all headers
+        config.setAllowedHeaders(List.of("**")); // Allow all headers
         config.setExposedHeaders(List.of("Authorization", "Content-Type")); // Ensure these are visible to frontend
         config.setAllowCredentials(true); // Important for cookies & auth
 
