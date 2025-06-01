@@ -59,9 +59,11 @@ const ItemContent = ({
                         </h1>
                     </div>                   
                 <div className=" justify-between">
-                    <img src={image} alt={truncateText(productName)} 
-                        className="md:h-36 sm:h-24 h-12 w-full object-cover rounded"> 
-                    </img>
+                    <img 
+                      src={image || productImage} 
+                      alt={truncateText(productName)} 
+                      className="md:h-36 sm:h-24 h-12 w-full object-cover rounded"
+                    />
                     <div className="flex mt-3 gap-2 mb-3 items-start">
                         <button onClick={() => removeItemFromCart({
                             productId,

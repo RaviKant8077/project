@@ -14,7 +14,7 @@ const Home = () => {
     const {isLoading , errorMessage } = useSelector((state) => state.errors || " ");
     
     useEffect(() => {
-            dispatch(fetchProducts());
+            dispatch(fetchProducts(""));
         },[dispatch]); 
 
     return (

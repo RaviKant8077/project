@@ -131,7 +131,7 @@ const Products = () => {
                     </div>
                     <div className='flex justify-center pt-10'>
                        <Paginations 
-                            numberOfPage={pagination?.totalPages || 1} 
+                            numberOfPage={pagination?.totalPages } 
                             totalProducts={pagination?.totalElement || 0} 
                             onPageChange={handlePageChange} // Pass the page change handler
                         />

@@ -8,9 +8,7 @@ import store from './store/reducers/store.js'
 
 render(
   <Provider store={store}>
-    <StrictMode>
       <App />
-    </StrictMode>
   </Provider>,
   document.getElementById('root')
 )

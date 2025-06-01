@@ -18,7 +18,7 @@ const Filter = ({categories}) => {
 */
 const [searchParams] = useSearchParams();
 const params = new URLSearchParams(searchParams);
-const pathName =useLocation().pathName;
+const pathName =useLocation().pathname;
 const navigate = useNavigate();
 
 const [category,setCategory] = useState("all");

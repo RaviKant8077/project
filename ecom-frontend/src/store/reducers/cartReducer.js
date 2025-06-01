@@ -104,6 +104,22 @@ export const cartReducer = (state = initialState, action) => {
             saveCartToStorage(newState.cart);
             return newState;
 
+        case "GET_USER_CART_PRODUCTS" :
+            newState = {
+                ...state,
+                cart : action.payload,
+                totalPrice : action.totalPrice,
+                cartId : action.cartId
+            };
+            return newState;
+
+        case "CLEAR_CART" :
+            return{
+                cart : [] ,
+                totalPrice : 0,
+                cartId : null
+            };
+
         case 'UPDATE_QUANTITY':
             newState = {
                 ...state,

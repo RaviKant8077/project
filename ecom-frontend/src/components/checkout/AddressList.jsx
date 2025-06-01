@@ -5,7 +5,7 @@ import { MdPinDrop, MdPublic } from "react-icons/md";
 import { selectUserCheckoutAddress } from "../../store/actions/index.js";
 import truncateText from "../../utills/truncateText.jsx";
 
-const AddressList = ({ addresses,selectedAddress,  setSelectedAddress, setOpenAddressModal }) => {
+const AddressList = ({ addresses,selectedAddress,  setSelectedAddress, setOpenAddressModal , setOpenDeleteModal }) => {
     const dispatch = useDispatch();
     const selectedUserCheckoutAddress = useSelector((state) => state.auth.selectedUserCheckoutAddress) ;
 
@@ -23,6 +23,7 @@ const AddressList = ({ addresses,selectedAddress,  setSelectedAddress, setOpenAd
     }
     const onDeleteButtonHandler = (addresses) => {
          setSelectedAddress(addresses);
+         setOpenDeleteModal(true);
     }
 
     const handleAddressSelection = (addresses) => {
@@ -81,7 +82,7 @@ const AddressList = ({ addresses,selectedAddress,  setSelectedAddress, setOpenAd
                             </div>
                         </div>
                     </div>
-                    <div className="flex gap-3 absolute top-4 right-2">
+                    <div className="flex gap-3 absolute top-8 right-2">
                         <button onClick={(e) => onEditButtonHandler(e,address)}>
                             <FaEdit size={18} className="text-teal-700" />
                         </button>

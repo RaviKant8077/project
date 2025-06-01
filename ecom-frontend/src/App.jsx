@@ -14,6 +14,7 @@ import LogIn from './components/auth/LogIn'
 import PrivateRoute from './components/PrivateRoute'
 import Register from './components/auth/Register'
 import CheckOut from './components/checkout/CheckOut'
+import PaymentConfirmation from './components/checkout/PaymentConfirmation'
 
 function App() {
   const dispatch = useDispatch();
@@ -36,7 +37,10 @@ function App() {
           <Route path='/about/'  element= {<About />} />
           <Route path='/contact/'  element= {<Contact />} />
           <Route path='/cart/'  element= {<Cart />} />
-          <Route path='/checkout/'  element= {<CheckOut />} />
+          <Route path='/' element={<PrivateRoute />} >
+               <Route path='/checkout/'  element= {<CheckOut />} />
+               <Route path='/order-confirm/'  element= {<PaymentConfirmation />} />
+          </Route>
           <Route path="/" element={<PrivateRoute publicPage />} >
               <Route path='/login/'  element= {<LogIn />} />
               <Route path='/register/'  element= {<Register />} />

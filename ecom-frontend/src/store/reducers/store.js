@@ -3,6 +3,7 @@ import { productReducer } from "./ProductReducer";
 import { errorReducer } from "./errorReducer";
 import { cartReducer } from "./cartReducer";
 import { authReducer } from "./authReducer";
+import { paymentMethodReducer } from "./paymentMethodReducer";
 
 const safeParse = (key, defaultValue) => {
   try {
@@ -28,8 +29,11 @@ const errorState = safeParse("error", {
   btnLoader: false,
 });
 
+const selectUserCheckoutAddress = localStorage.getItem("CHECKOUT_ADDRESS") 
+? JSON.parse(localStorage.getItem("CHECKOUT_ADDRESS")) : [];
+
 const initialState = { 
-    auth: { user, address },
+    auth: { user, address ,selectUserCheckoutAddress},
     carts: { cart: cartItems },
     product: { products, categories, pagination },
     error: errorState,
@@ -48,6 +52,7 @@ export const store = configureStore({
         error: errorReducer,
         carts: cartReducer,
         auth: authReducer,
+        payment : paymentMethodReducer,
     },
     preloadedState: initialState,
     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(loggerMiddleware),
@@ -67,3 +72,5 @@ store.subscribe(() => {
 });
 
 export default store;
+
+
