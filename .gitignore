@@ -1,5 +1,7 @@
 # Ignore IntelliJ project files
 .idea/
+#ignore .properties file
+
 
 # Ignore build output
 /target/
@@ -7,6 +9,7 @@
 # Ignore logs and temp files
 *.log
 *.tmp
+
 
 # Ignore OS-specific files
 .DS_Store
